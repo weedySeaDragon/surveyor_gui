@@ -1,23 +1,36 @@
 module SurveyorControllerCustomMethods
+
+
   def self.included(base)
     base.send :layout, 'surveyor_gui/surveyor_modified'
   end
+
 
   def edit
     root = File.expand_path('../../', __FILE__)
     #place the surveyor_gui views ahead of the default surveyor view in order of preference
     #so we can load customized partials.
+
+    # This will clobber the main application. BAD BAD BAD!
     prepend_view_path(root+'/views')
+
+    # Instead, search for the surveyor gem path and just be sure that we are ahead of *that*.
+    #  Thus the main application can still override views as needed.
+
+
     super
   end
+
+
   def update
+
     question_ids_for_dependencies = (params[:r] || []).map{|k,v| v["question_id"] }.compact.uniq
     saved = load_and_update_response_set_with_retries
 
     if saved && params[:finish] && !@response_set.mandatory_questions_complete?
       #did not complete mandatory fields
       ids, remove, question_ids, flashmsg = {}, {}, [], []
-      flashmsg << "You must complete all required fields before submitting the survey.  Please fill in the following:"
+      flashmsg << I18n.t('surveyor_gui.update.complete_required')
 
       triggered_mandatory_missing = @response_set.triggered_mandatory_missing
 
@@ -43,8 +56,9 @@ module SurveyorControllerCustomMethods
           flashmsg << "&nbsp;&nbsp;" + m.survey_section.title
         end
 
-        flashmsg << "&nbsp;&nbsp;&nbsp;&nbsp;question&nbsp;" + question_number[m.id.to_s].to_s + ') '+ m.text
+        flashmsg << "&nbsp;&nbsp;&nbsp;&nbsp;#{t('activerecord.attributes.question.text')}&nbsp;" + question_number[m.id.to_s].to_s + ') '+ m.text
       end
+
       respond_to do |format|
         format.js do
 
@@ -56,9 +70,24 @@ module SurveyorControllerCustomMethods
         end
       end
       return
-#    elsif @response_set.survey.id.to_s == evaluation_institution.institution.vendor_value_analysis_questionnaire_id && saved && params[:finish]
+
+
+      #    elsif @response_set.survey.id.to_s == evaluation_institution.institution.vendor_value_analysis_questionnaire_id && saved && params[:finish]
+
     elsif saved && params[:finish]
-      return redirect_with_message(surveyor_finish, :notice, t('surveyor.completed_survey'))
+
+      #return redirect_with_message(surveyor_finish, :notice, t('surveyor.completed_survey'))
+
+
+      flash[:notice] = t('surveyor.completed_survey')
+      # TODO use a pattern that can be nil or overridden
+
+      # TODO score the quiz with the response sets; display the results
+      results = QuizScorer.results_by_score(@response_set)
+
+      redirect_to(surveyor_finish) and return # TODO pass the response_set id to the action so it can calc results
+
+
     end
 
 
@@ -75,14 +104,17 @@ module SurveyorControllerCustomMethods
         if @response_set
           render :json => @response_set.reload.all_dependencies(question_ids_for_dependencies)
         else
-          render :text => "No response set #{params[:response_set_code]}",
-            :status => 404
+          render :text => "#{t('surveyor_gui.update.no_response_set')} #{params[:response_set_code]}",
+                 :status => 404
         end
       end
     end
 
   end
+
 end
+
+
 class SurveyorController < ApplicationController
   include Surveyor::SurveyorControllerMethods
   include SurveyorControllerCustomMethods

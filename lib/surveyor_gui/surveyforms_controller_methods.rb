@@ -170,6 +170,7 @@ module SurveyorGui
        collection.where('display_order >= ?',paste_at).update_all('display_order=display_order+1')
     end
 
+
     def _save_pasted_object(object, surveyform, session_id)
       if object.save
         surveyform.reload
@@ -180,6 +181,7 @@ module SurveyorGui
         return false
       end
     end
+
 
     def cut_question
       session[:cut_question]=params[:question_id]
