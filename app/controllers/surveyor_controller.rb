@@ -61,6 +61,7 @@ module SurveyorControllerCustomMethods
         end
       end
       return
+
       #    elsif @response_set.survey.id.to_s == evaluation_institution.institution.vendor_value_analysis_questionnaire_id && saved && params[:finish]
     elsif saved && params[:finish]
       return redirect_with_message(surveyor_finish, :notice, t('surveyor.completed_survey'))
