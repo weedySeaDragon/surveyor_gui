@@ -8,6 +8,7 @@ module SurveyorGui
 
 
     def index
+      # TODO I18n translation localization needed
       if params[:template]=='false'
         template=false
       elsif params[:template]=='true'
@@ -21,6 +22,7 @@ module SurveyorGui
 
 
     def new
+      # TODO I18n translation localization needed
       @title = "Create New "+ (params[:template] == 'template' ? 'Template' : 'Survey')
       @hide_survey_type = params[:hide_survey_type]
       template = params[:template] == 'template' ? true : false
@@ -31,6 +33,7 @@ module SurveyorGui
 
 
     def edit
+      # TODO I18n translation localization needed
       @surveyform = Surveyform.where(:id => params[:id]).includes(:survey_sections).first
       @survey_locked=false
       #unfortunately, request.referrer does not seem to capture parameters. Need to add explicitly.
@@ -48,6 +51,7 @@ module SurveyorGui
 
 
     def create
+      # TODO I18n translation localization needed
       @surveyform = Surveyform.new(surveyforms_params.merge(user_id: @current_user.nil? ? @current_user : @current_user.id))
       if @surveyform.save
         flash[:notice] = "Successfully created survey."
@@ -61,6 +65,7 @@ module SurveyorGui
 
 
     def update
+      # TODO I18n translation localization needed
       @title = "Update Survey"
       @surveyform = Surveyform.includes(:survey_sections).find(params[:surveyform][:id])
       if @surveyform.update_attributes(surveyforms_params)
@@ -75,6 +80,7 @@ module SurveyorGui
 
 
     def show
+      # TODO I18n translation localization needed
       @title = "Show Survey"
       @survey_locked = true
       @surveyform = Surveyform.find(params[:id])
@@ -83,6 +89,7 @@ module SurveyorGui
 
 
     def destroy
+      # TODO I18n translation localization needed
       @surveyform = Surveyform.find(params[:id])
       @surveyform.destroy
       if !@surveyform
@@ -150,6 +157,7 @@ module SurveyorGui
 
 
     def paste_section
+      # TODO I18n translation localization needed
       @title="Edit Survey"
       @question_no = 0
       if session[:cut_section]
@@ -217,6 +225,7 @@ module SurveyorGui
 
 
     def paste_question
+      # TODO I18n translation localization needed
       @title="Edit Survey"
       if session[:cut_question]
         @question = Question.find(session[:cut_question])
@@ -249,6 +258,7 @@ module SurveyorGui
 
 
     def replace_question
+      # TODO I18n translation localization needed
       question_id = params[:question_id]
       begin
         @question = Question.find(question_id)
@@ -261,6 +271,7 @@ module SurveyorGui
 
 
     def clone_survey
+      # TODO I18n translation localization needed
       @title = "Clone Survey"
       @surveyform = SurveyCloneFactory.new(params[:id]).clone
       if @surveyform.save
