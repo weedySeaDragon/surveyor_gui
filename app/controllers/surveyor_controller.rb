@@ -23,8 +23,7 @@ module SurveyorControllerCustomMethods
 
 
   def update
-
-    question_ids_for_dependencies = (params[:r] || []).map{|k,v| v["question_id"] }.compact.uniq
+    question_ids_for_dependencies = (params[:r] || []).map {|k, v| v["question_id"]}.compact.uniq
     saved = load_and_update_response_set_with_retries
 
     if saved && params[:finish] && !@response_set.mandatory_questions_complete?
@@ -40,7 +39,7 @@ module SurveyorControllerCustomMethods
       last_question_number = 0
       @response_set.survey.survey_sections.each do |ss|
         index = 0
-        ss.questions.where('display_type!=?','label').each do |q|
+        ss.questions.where('display_type!=?', 'label').each do |q|
           if q.triggered?(@response_set)
             question_number[q.id.to_s] = last_question_number = last_question_of_previous_section + index + 1
             index = index + 1
@@ -62,7 +61,7 @@ module SurveyorControllerCustomMethods
       respond_to do |format|
         format.js do
 
-          render :json=>{"flashmsg"=>flashmsg}
+          render :json => {"flashmsg" => flashmsg}
         end
         format.html do
           flash[:notice] = flashmsg.join('<br />')
@@ -75,19 +74,7 @@ module SurveyorControllerCustomMethods
       #    elsif @response_set.survey.id.to_s == evaluation_institution.institution.vendor_value_analysis_questionnaire_id && saved && params[:finish]
 
     elsif saved && params[:finish]
-
-      #return redirect_with_message(surveyor_finish, :notice, t('surveyor.completed_survey'))
-
-
-      flash[:notice] = t('surveyor.completed_survey')
-      # TODO use a pattern that can be nil or overridden
-
-      # TODO score the quiz with the response sets; display the results
-      results = QuizScorer.results_by_score(@response_set)
-
-      redirect_to(surveyor_finish) and return # TODO pass the response_set id to the action so it can calc results
-
-
+      return redirect_with_message(surveyor_finish, :notice, t('surveyor.completed_survey'))
     end
 
 
@@ -111,7 +98,6 @@ module SurveyorControllerCustomMethods
     end
 
   end
-
 end
 
 

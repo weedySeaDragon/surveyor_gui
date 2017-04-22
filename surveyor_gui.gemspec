@@ -26,25 +26,27 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
-  # ruby version 2.3.1 or greater
-  s.required_ruby_version = '~> 2.3.1', '>= 2.3.1'
+  # ruby version 2.4.0 or greater
+  s.required_ruby_version = '~> 2.4.0', '>= 2.4.0'
     # this version is required for capybara-webkit
 
 
-  s.add_dependency 'rails',  '~> 4.0', '> 4.0.0'
+  s.add_dependency 'rails', '~> 4.2.8',  '>= 4.2.0'
   s.add_dependency 'dynamic_form', '~> 1.1.4'
 
   s.add_dependency 'jquery-ui-rails'
 
-  s.add_dependency 'surveyor'
+  s.add_dependency 'surveyor', '~> 1.5.1', '>= 1.5.1'  # ruby 2.4.0
   s.add_dependency 'will_paginate', '~> 3.0.5'
 
-  s.add_dependency 'simple_form', '~> 3.0.2', '>= 3.0.2'
+  s.add_dependency 'simple_form', '~> 3.3.1'
   s.add_dependency 'carrierwave'
   s.add_dependency 'colorbox-rails', '~> 0.1.1'
   s.add_dependency 'jquery-form-rails', '~> 1.0.1'
   s.add_dependency 'deep_cloneable', '~> 2.0.0'
   s.add_dependency 'lazy_high_charts'
+
+  s.add_dependency 'formtastic'
 
 
   s.add_development_dependency "sqlite3"
@@ -57,7 +59,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('capybara')
   s.add_development_dependency('launchy', '~> 2.4.2')
   s.add_development_dependency('poltergeist', '~>1.9.0')
-  s.add_development_dependency('capybara-webkit', '~> 1.11.1')
+  s.add_development_dependency('capybara-webkit', '~> 1.14.0')
 
   s.add_development_dependency('json_spec', '~> 1.1.1')
   s.add_development_dependency('factory_girl', '~> 4.4.0')
