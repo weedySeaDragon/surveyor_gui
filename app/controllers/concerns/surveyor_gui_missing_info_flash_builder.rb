@@ -1,6 +1,7 @@
 # Build flash messages when questions are missed that shouldn't have been
-#  This mixin makes it easier for these methods to be overridden by
-#  the main app or other gems.
+#  This mixin will make it easier for these methods to be overridden by
+#  the main app or other gems. ONCE THE SILLY hardcoded reordering of this (e.g. in surveyor_controller.rb #edit)
+#  is UNDONE.
 
 module SurveyorGui
 
@@ -28,10 +29,10 @@ module SurveyorGui
 
       missing_questions.each do | q |
 
-        if q.survey_section_id != section_id_with_missing_q
-          section_id_with_missing_q = q.survey_section_id # once we've noted the section, we can ignore it
-          html_strs << flash_section_of_missing(q)
-        end
+       # if q.survey_section_id != section_id_with_missing_q
+       #   section_id_with_missing_q = q.survey_section_id # once we've noted the section, we can ignore it
+       #   html_strs << flash_section_of_missing(q)
+       # end
 
         html_strs << flash_question_missing(q, displayed_q_numbers[q.id.to_s])
 
