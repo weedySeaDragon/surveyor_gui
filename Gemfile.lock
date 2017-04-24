@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/weedySeaDragon/ae-surveyor.git
-  revision: 4da22cd6b9549ae63d0f9a463e985c3d460d843e
+  revision: 1d63dfb3c4b08ae1943b8adf49e5a5626cd39e02
   specs:
-    surveyor (1.5.3)
+    surveyor (1.5.4)
       formtastic (~> 2.2.1)
       haml (~> 4.0)
       mustache (~> 0.99)
@@ -25,7 +25,7 @@ PATH
       lazy_high_charts
       rails (~> 4.2.8, >= 4.2.0)
       simple_form (~> 3.3.1)
-      surveyor (~> 1.5.3, >= 1.5.1)
+      surveyor (~> 1.5.4, >= 1.5.1)
       will_paginate (~> 3.0.5)
 
 GEM
@@ -124,7 +124,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (2.0.4)
+    json (2.1.0)
     json_spec (1.1.4)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
