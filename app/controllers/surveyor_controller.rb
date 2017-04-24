@@ -1,9 +1,10 @@
-
+require_relative File.join(__dir__, '../../app/controllers/concerns/surveyor_gui_missing_info_flash_builder' )
 
 module SurveyorControllerCustomMethods
 
 
-  include SurveyorGui::SurveyorGuiMissingInfoFlashBuilder
+  include SurveyorGui::MissingInfoFlashBuilder
+
 
   def self.included(base)
     base.send :layout, 'surveyor_gui/surveyor_modified'

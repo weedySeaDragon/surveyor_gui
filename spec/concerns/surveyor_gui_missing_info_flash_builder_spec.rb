@@ -5,7 +5,7 @@ require File.join(__dir__, '..', '..','app','controllers','concerns', 'surveyor_
 
 class MockController
 
-  include SurveyorGuiMissingInfoFlashBuilder
+  include SurveyorGui::MissingInfoFlashBuilder
 
   def t(something)
     "translated-#{something}"
@@ -52,7 +52,7 @@ end
 
 
 
-describe SurveyorGuiMissingInfoFlashBuilder do
+describe SurveyorGui::MissingInfoFlashBuilder do
 
   let(:mock_controller) { MockController.new }
 
@@ -86,9 +86,16 @@ describe SurveyorGuiMissingInfoFlashBuilder do
                           [q1, q2, q3, q4]
                         }
 
+    let(:display_q_nums) {
+                           {'0' => '1',
+                            '1' => '2',
+                            '2' => 'c',
+                            '3' => 'iv'}
+    }
+
     describe 'default wrapping class and join string' do
 
-      let(:html_returned) { mock_controller.build_main_missing_flash(missing_qs, ['1', '2', 'c', 'iv'] )}
+      let(:html_returned) { mock_controller.build_main_missing_flash(missing_qs, display_q_nums )}
 
       it 'wraps everything with a div and default CSS class' do
         expect(html_returned).to match(/<div class='surveyor-missing-qs'>(.*)<\/div>$/)
@@ -105,7 +112,7 @@ describe SurveyorGuiMissingInfoFlashBuilder do
 
     describe 'default wrapping class and join string' do
 
-      let(:html_returned) { mock_controller.build_main_missing_flash(missing_qs, ['1', '2', 'c', 'iv'],
+      let(:html_returned) { mock_controller.build_main_missing_flash(missing_qs, display_q_nums,
                                                                      wrapping_class: 'wclass', joiner: '?') }
 
       it 'wraps everything with a div and a custom CSS class' do
