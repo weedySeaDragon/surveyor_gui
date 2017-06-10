@@ -8,4 +8,4 @@ en:
   surveyor_gui:
     update:
       complete_required: "You must complete all required fields before submitting the survey.  Please fill in the following:"
-      no_response_set: "No respose set"
+      no_response_set: "No response set"
