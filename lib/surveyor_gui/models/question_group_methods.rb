@@ -8,17 +8,26 @@ module SurveyorGui
 
 
       def self.included(base)
+
         base.send :attr_accessor, :is_mandatory, :survey_section_id
+
         base.send :attr_writer, :question_id
+
         base.send :attr_accessible, :questions_attributes if defined? ActiveModel::MassAssignmentSecurity
+
         base.send :accepts_nested_attributes_for, :questions, :allow_destroy => true
+
         base.send :has_many, :columns
+
         base.send :accepts_nested_attributes_for, :columns, :allow_destroy => true
+
         base.send :accepts_nested_attributes_for, :dependency, :reject_if => lambda { |d| d[:rule].blank? }, :allow_destroy => true
+
       end
 
 
       def question_type_id
+
         if !@question_type_id
           @question_type = case display_type
                              when "inline"
@@ -35,6 +44,7 @@ module SurveyorGui
 
 
       def question_type_id=(question_type_id)
+
         case question_type_id
           when "group_default"
             write_attribute(:display_type, "default")
@@ -43,13 +53,17 @@ module SurveyorGui
           when "repeater"
             write_attribute(:display_type, "repeater")
         end
+
         @question_type_id = question_type_id
+
       end
 
 
       def trim_columns(qty_to_trim)
+
         columns = self.columns.order('id ASC')
         columns.last(qty_to_trim).map { |c| c.destroy }
+
       end
 
 
