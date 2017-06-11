@@ -19,10 +19,25 @@ module SurveyorGui
 
         base.send :has_many, :columns
 
+
+        base.send( :default_scope, -> { base.includes(:columns, :questions ) } )
+
+
         base.send :accepts_nested_attributes_for, :columns, :allow_destroy => true
 
         base.send :accepts_nested_attributes_for, :dependency, :reject_if => lambda { |d| d[:rule].blank? }, :allow_destroy => true
 
+
+      end
+
+
+      def answers
+        questions.includes(:answers).flat_map(&:answers)
+      end
+
+
+      def responses_in_set( response_set )
+        questions.includes(:responses).joins(:responses).where('responses.response_set_id = ?', response_set.id)
       end
 
 
