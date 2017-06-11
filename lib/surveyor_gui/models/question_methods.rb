@@ -16,12 +16,15 @@ module SurveyorGui
         base.send :attr_writer, :grid_columns_textbox, :omit, :omit_text,
                   :other, :other_text, :comments_text, :comments, :dropdown_column_count
 
-        base.send :attr_accessible, :dummy_answer, :dummy_answer_array, :question_type, :question_type_id, :survey_section_id, :question_group_id,
-                  :text, :pick, :reference_identifier, :display_order, :display_type,
-                  :is_mandatory, :prefix, :suffix, :answers_attributes, :decimals, :dependency_attributes,
-                  :hide_label, :dummy_blob, :dynamically_generate, :answers_textbox, :dropdown_column_count,
-                  :grid_columns_textbox, :grid_rows_textbox, :omit_text, :omit, :other, :other_text, :is_comment, :comments, :comments_text,
-                  :dynamic_source, :modifiable, :report_code, :question_group_attributes if defined? ActiveModel::MassAssignmentSecurity
+
+        if defined? ActiveModel::MassAssignmentSecurity
+          base.send :attr_accessible, :dummy_answer, :dummy_answer_array, :question_type, :question_type_id, :survey_section_id, :question_group_id,
+                    :text, :pick, :reference_identifier, :display_order, :display_type,
+                    :is_mandatory, :prefix, :suffix, :answers_attributes, :decimals, :dependency_attributes,
+                    :hide_label, :dummy_blob, :dynamically_generate, :answers_textbox, :dropdown_column_count,
+                    :grid_columns_textbox, :grid_rows_textbox, :omit_text, :omit, :other, :other_text, :is_comment, :comments, :comments_text,
+                    :dynamic_source, :modifiable, :report_code, :question_group_attributes
+        end
 
         base.send :accepts_nested_attributes_for, :answers, :reject_if => lambda { |a| a[:text].blank? }, :allow_destroy => true
 
@@ -31,15 +34,14 @@ module SurveyorGui
 
         base.send :has_many, :dependency_conditions, :through => :dependency, :dependent => :destroy
 
-        base.send( :default_scope, lambda { base.order('display_order') } )
+        base.send(:default_scope, lambda { base.order('display_order') })
 
-        base.send( :scope, :by_display_order, -> { base.order('display_order') } )
+        base.send(:scope, :by_display_order, -> { base.order('display_order') })
 
 
         ### everything below this point must be commented out to run the rake tasks.
 
         base.send :accepts_nested_attributes_for, :dependency, :reject_if => lambda { |d| d[:rule].blank? }, :allow_destroy => true
-        ### everything below this point must be commented out to run the rake tasks.
 
         base.send :mount_uploader, :dummy_blob, BlobUploader
 
@@ -57,6 +59,9 @@ module SurveyorGui
         base.send( :scope, :is_not_comment, -> { base.where(is_comment: false) } )
         base.send( :scope, :is_comment, -> { base.where(is_comment: true) } )
 
+        base.send( :scope, :in_response_set, ->(resp_set) { base.includes(:responses).joins(:responses).where('responses.response_set_id = ?', resp_set.id ) })
+
+
         base.class_eval do
 
           def answers_attributes=(ans)
@@ -68,6 +73,7 @@ module SurveyorGui
             #
             if @question_type_id!='number' && !ans.empty? && ans["0"]
               ans["0"].merge!({ 'original_choice' => ans["0"]["text"] })
+
               assign_nested_attributes_for_collection_association(:answers, ans)
             end
           end
@@ -100,7 +106,7 @@ module SurveyorGui
           self.survey_section.survey.response_sets.where('test_data = ?', true).each { |r| r.destroy }
         end
 
-        if self.id && !survey_section.survey.template && survey_section.survey.response_sets.count>0
+        if self.id && !survey_section.survey.template && survey_section.survey.response_sets.count > 0
           errors.add(:base, "Reponses have already been collected for this survey, therefore it cannot be modified. Please create a new survey instead.")
           false
         end
@@ -117,7 +123,7 @@ module SurveyorGui
       end
 
 
-      #      #generates descriptions for different types of questions, including those that use widgets
+      # generates descriptions for different types of questions, including those that use widgets
       def question_type
         @question_type = QuestionType.find(question_type_id)
       end
@@ -422,19 +428,22 @@ module SurveyorGui
 
 
       def build_complex_questions
+
         if (@answers_textbox && self.pick!="none") || @grid_columns_textbox || @grid_rows_textbox
+
           self.question_type.build_complex_question_structure(
               self,
               answers_textbox: @answers_textbox,
               omit_text: @omit_text,
-              is_exclusive: @omit=="1",
+              is_exclusive: @omit == "1",
               other_text: @other_text,
-              other: @other=="1",
+              other: @other == "1",
               comments_text: @comments_text,
-              comments: @comments=="1",
+              comments: @comments == "1",
               grid_columns_textbox: @grid_columns_textbox,
               grid_rows_textbox: @grid_rows_textbox)
         end
+
       end
 
 
