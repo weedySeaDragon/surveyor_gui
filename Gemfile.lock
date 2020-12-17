@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/weedySeaDragon/ae-surveyor.git
-  revision: de6984db8b9a6a92141392b60cc6f6a811266dcc
+  revision: e0f0e9a8185d79ccc1358af233c70191d604ba6a
   specs:
-    surveyor (1.6.6)
+    surveyor (1.6.7)
       formtastic (>= 2.2.1)
       haml (>= 4.0)
       mustache (~> 0.99)
@@ -14,7 +14,7 @@ GIT
 PATH
   remote: .
   specs:
-    surveyor_gui (0.3.0)
+    surveyor_gui (0.3.1)
       carrierwave
       chartkick
       colorbox-rails (~> 0.1)
@@ -283,7 +283,7 @@ DEPENDENCIES
   rspec-retry
   sass-rails
   sqlite3
-  surveyor (>= 1.6.6)!
+  surveyor (>= 1.6.7)!
   surveyor_gui!
   uglifier (>= 1.0.3)
   web-console (>= 2.0)
