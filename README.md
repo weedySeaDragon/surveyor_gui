@@ -1,7 +1,7 @@
 surveyor_gui
 ============
 
-current version =  0.3.2
+current version =  1.7.0 (in sync with the surveyor gem version)
 
 Some differences with the surveyor_gui fork:
 
