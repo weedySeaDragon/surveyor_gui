@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.4.0'
     # this version is required for capybara-webkit
 
-  s.add_dependency 'surveyor', '>= 1.6'
+  s.add_dependency 'surveyor', '>= 1.6.8'
 
   s.add_dependency 'rails', '~> 5'
   s.add_dependency 'dynamic_form'

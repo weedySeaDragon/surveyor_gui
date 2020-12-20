@@ -1,4 +1,5 @@
-%div{class: "@section.custom_class", id: "section_#{@section.id}" }
+- custom_style = @section.custom_class.present? ? " #{@section.custom_class}" : ''
+%div{class: "survey_section#{custom_style}", id: "section_#{@section.id}" }
   %span.title=  #@section.translation(I18n.locale)[:title]
   - qs ||= []
   - (questions = @section.questions).each_with_index do |q, i|
